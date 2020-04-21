@@ -14,21 +14,19 @@ def get_last_page():
 
 
 def extract_job(html):
-    title = html.find("div", {"class": "fl1"}).find("a")["title"]
-    company, location = html.find("h3", {
-        "class": "mb4"
-    }).find_all(
+    title = html.find("h2").find("a")["title"]
+    company, location = html.find("h3").find_all(
         "span", recursive=False)
-    company = company.get_text(strip=True).strip("\n")
+    company = company.get_text(strip=True)
     location = location.get_text(
         strip=True).strip("-").strip(" \r").strip("\n")
     job_id = html['data-jobid']
     return {
         'title': title,
         'company': company,
-        'link': f"https://stackoverflow.com/jobs/{job_id}"
+        'location': location,
+        "apply_link": f"https://stackoverflow.com/jobs/{job_id}"
     }
-
 
 def extract_jobs(last_page):
     jobs = []
